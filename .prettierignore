@@ -1,0 +1,6 @@
+.next/
+node_modules/
+public/images/
+public/video/
+package-lock.json
+integrations/google-forms/CatalogueForm.gs

@@ -37,8 +37,8 @@ export default async function PaymentCallbackPage({ searchParams }) {
     success: {
       icon: CheckCircle2,
       eyebrow: 'Payment verified',
-      title: 'Your order is confirmed.',
-      body: `Paystack confirmed ${formatNaira(result.amountKobo)} for ${result.itemCount} ${result.itemCount === 1 ? 'piece' : 'pieces'}. The Hadassah team will follow up using your submitted details.`,
+      title: 'Your payment is confirmed.',
+      body: `Paystack confirmed ${formatNaira(result.amountKobo)} for ${result.itemCount} ${result.itemCount === 1 ? 'piece' : 'pieces'}. Your order now awaits Hadassah's availability and delivery confirmation; the team will follow up using your submitted details.`,
     },
     'not-complete': {
       icon: Clock3,

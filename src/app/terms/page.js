@@ -13,9 +13,9 @@ export default function TermsPage() {
       <section>
         <h2>About these terms</h2>
         <p>
-          These terms apply when you use this website or place an order with {business.name}. Our
-          final legal identity must be added and the terms professionally reviewed before live
-          payments are enabled.
+          These terms apply when you use this website or discuss an order with {business.name}.
+          Online checkout will remain unavailable until the complete ordering terms have been
+          approved and published.
         </p>
       </section>
       <section>
@@ -31,8 +31,8 @@ export default function TermsPage() {
         <h2>Prices and delivery</h2>
         <p>
           Product prices are shown in Nigerian naira (NGN). Any applicable delivery fee and expected
-          delivery time will be shown or confirmed before payment or before your order is placed. We
-          will not assume an exact fee or timing where it has not yet been agreed with you.
+          delivery time will be confirmed before payment. We will not assume an exact fee or timing
+          where it has not yet been agreed with you.
         </p>
       </section>
       <section>

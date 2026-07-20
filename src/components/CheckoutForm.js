@@ -2,16 +2,22 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, LockKeyhole, Minus, Plus, ShieldCheck } from 'lucide-react';
-import { useState } from 'react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  CreditCard,
+  MessageCircle,
+  Minus,
+  Plus,
+  ShieldCheck,
+} from 'lucide-react';
 
 import { formatNaira, MAX_CART_QUANTITY } from '@/data/products';
+import { business } from '@/data/business';
 import { updateCartQuantity, useCart } from '@/lib/cart';
 
-export function CheckoutForm({ products, paystackConfigured }) {
+export function CheckoutForm({ products }) {
   const cart = useCart();
-  const [error, setError] = useState('');
-  const [pending, setPending] = useState(false);
   const productMap = new Map(products.map((product) => [product.id, product]));
   const lines = cart.flatMap((item) => {
     const product = productMap.get(item.id);
@@ -22,29 +28,18 @@ export function CheckoutForm({ products, paystackConfigured }) {
     0,
   );
 
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    setPending(true);
-    setError('');
-    try {
-      const response = await fetch('/api/payments/paystack/initialize', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customer: Object.fromEntries(formData),
-          cart: lines.map(({ id, quantity }) => ({ id, quantity })),
-          policyAccepted: formData.has('policyAccepted'),
-        }),
-      });
-      const payload = await response.json();
-      if (!response.ok || !payload.authorizationUrl)
-        throw new Error(payload.error || 'Payment could not be started.');
-      window.location.assign(payload.authorizationUrl);
-    } catch (submissionError) {
-      setError(submissionError.message);
-      setPending(false);
-    }
+    const customer = Object.fromEntries(new FormData(event.currentTarget));
+    const orderRequestHref = `https://wa.me/${business.whatsappNumber}?text=${encodeURIComponent(
+      `Hello Hadassah Lifestyle, please help me confirm this order before payment:\n\nCustomer\n- Name: ${customer.name}\n- Email: ${customer.email}\n- Phone: ${customer.phone}\n- Delivery address: ${customer.address}, ${customer.city}, ${customer.state}\n\nOrder\n${lines
+        .map(({ product, quantity }) => `- ${product.name} x ${quantity}`)
+        .join(
+          '\n',
+        )}\nItems total: ${formatNaira(totalKobo)}\n\nPlease confirm the variants, availability and delivery fee. I understand that no online payment has been made.`,
+    )}`;
+
+    window.open(orderRequestHref, '_blank', 'noopener,noreferrer');
   }
 
   if (!lines.length) {
@@ -61,9 +56,9 @@ export function CheckoutForm({ products, paystackConfigured }) {
   }
 
   return (
-    <div className="checkout-grid">
-      <form onSubmit={handleSubmit} className="checkout-form">
-        <p className="eyebrow eyebrow--dark">Delivery details</p>
+    <div className="checkout-grid checkout-grid--concierge">
+      <form className="checkout-form" onSubmit={handleSubmit}>
+        <p className="eyebrow eyebrow--dark">Personal shopping concierge</p>
         <h2>Where should we prepare your order?</h2>
         <div className="checkout-fields">
           <label className="field-wide">
@@ -119,34 +114,30 @@ export function CheckoutForm({ products, paystackConfigured }) {
           </label>
         </div>
         <label className="policy-consent">
-          <input name="policyAccepted" type="checkbox" required />
+          <input type="checkbox" name="policyAccepted" required />
           <span>
-            I have read and agree to the <Link href="/terms">customer terms</Link>,{' '}
+            I have read and accept the <Link href="/terms">customer terms</Link>,{' '}
             <Link href="/privacy">privacy notice</Link> and{' '}
             <Link href="/delivery-returns">delivery and returns policy</Link>.
           </span>
         </label>
-        {!paystackConfigured && (
-          <div className="configuration-notice" role="status">
-            <strong>Online payment is not configured.</strong>
-            <p>
-              Your bag is saved on this device, but payment is disabled until the server has a
-              Paystack secret key.
-            </p>
+        <div className="configuration-notice" role="status">
+          <div className="configuration-notice__heading">
+            <CreditCard aria-hidden="true" />
+            <strong>Paystack payment is not ready yet.</strong>
           </div>
-        )}
-        {error && (
-          <p className="checkout-error" role="alert">
-            {error}
+          <p>
+            You cannot send money through this website because the Paystack integration is not yet
+            ready. You will not be charged. We will prepare a WhatsApp message with your details;
+            review it and press Send there so we can confirm variants, availability and delivery.
           </p>
-        )}
+        </div>
         <div className="checkout-submit">
           <Link href="/#shop">
             <ArrowLeft /> Keep shopping
           </Link>
-          <button className="button button--wine" disabled={!paystackConfigured || pending}>
-            <LockKeyhole /> {pending ? 'Connecting securely...' : 'Continue to Paystack'}{' '}
-            <ArrowRight />
+          <button className="button button--wine" type="submit">
+            <MessageCircle /> Open order in WhatsApp <ArrowRight />
           </button>
         </div>
       </form>
@@ -154,6 +145,9 @@ export function CheckoutForm({ products, paystackConfigured }) {
       <aside className="order-summary">
         <p className="eyebrow eyebrow--dark">Order confirmation</p>
         <h2>Your bag</h2>
+        <p className="order-summary__intro">
+          Adjust quantities here before adding delivery details.
+        </p>
         <div className="order-lines">
           {lines.map(({ product, quantity }) => (
             <div className="order-line" key={product.id}>
@@ -191,8 +185,8 @@ export function CheckoutForm({ products, paystackConfigured }) {
         <div className="secure-note">
           <ShieldCheck />
           <p>
-            The server checks current product prices before Paystack opens. Card details are handled
-            securely by Paystack and never stored here.
+            Your bag stays on this device. No money is collected here while Paystack remains
+            unavailable.
           </p>
         </div>
       </aside>

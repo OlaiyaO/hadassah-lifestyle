@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="15" fill="#5b1423"/>
-  <g fill="#e5a84b" stroke="#f2c866" stroke-width="1.4" stroke-linejoin="round" transform="translate(7 6.5) scale(.5)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-labelledby="title">
+  <title id="title">Hadassah interlocking H symbol in wine</title>
+  <g fill="#5b1423">
     <path d="M4 35C6 16 21 3 40 2H57V36H39V19H24C15 20 8 27 4 35Z"/>
     <path d="M4 35C8 26 15 20 24 19V67C12 63 4 50 4 35Z"/>
     <path d="M70 16C86 21 96 34 96 50C96 58 93 65 89 70C85 74 78 77 70 79V16Z"/>

@@ -32,14 +32,14 @@ export function PolicyPage({ eyebrow, title, introduction, children }) {
         </aside>
         <article className="policy-content">
           <div className="policy-draft" role="note">
-            <strong>Operational draft - review before enabling live payments</strong>
+            <strong>Online checkout notice</strong>
             <p>
-              Legal identity and final policy decisions are incomplete. This page must be reviewed
-              before launch.
+              Online payment remains unavailable while final ordering terms are being approved.
+              Contact the Hadassah team before sending payment.
             </p>
           </div>
           {children}
-          <p className="policy-version">Draft version: 2026-07-draft</p>
+          <p className="policy-version">Last updated: July 2026</p>
         </article>
       </div>
     </main>

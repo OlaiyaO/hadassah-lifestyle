@@ -1,7 +1,7 @@
 import { ArrowLeft, ArrowUpRight, Download, Eye } from 'lucide-react';
 import Link from 'next/link';
 
-import { BrandMark } from '@/components/BrandMark';
+import { BrandMark, BrandSymbol } from '@/components/BrandMark';
 import { brandTemplates } from '@/data/brandTemplates';
 import { business } from '@/data/business';
 
@@ -41,6 +41,60 @@ export default function BrandKitPage() {
           </span>
         </div>
       </section>
+      <section className="kit-identity" id="identity">
+        <div className="kit-identity__intro">
+          <p>Core identity</p>
+          <h2>Built from her original mark.</h2>
+          <p>
+            The interlocking H keeps the client’s original upper-left and lower-right ribbon
+            construction. Cleaner curves, equal joints and a defined gold keyline make it reliable
+            on screen, in print and at small sizes.
+          </p>
+        </div>
+        <div className="kit-identity__marks">
+          <article className="kit-mark-card kit-mark-card--wine">
+            <BrandMark light dimensional />
+            <span>Primary lockup · wine field</span>
+          </article>
+          <article className="kit-mark-card kit-mark-card--cream">
+            <BrandMark dimensional />
+            <span>Primary lockup · light field</span>
+          </article>
+          <article className="kit-mark-card kit-mark-card--symbol">
+            <BrandSymbol dimensional />
+            <span>Dimensional monogram</span>
+          </article>
+          <article className="kit-mark-card kit-mark-card--flat">
+            <BrandSymbol />
+            <span>One-colour production mark</span>
+          </article>
+        </div>
+        <div className="kit-brand-specs">
+          <div>
+            <small>Palette</small>
+            <span className="kit-swatch kit-swatch--wine">Wine · #5B1423</span>
+            <span className="kit-swatch kit-swatch--gold">Gold · #E5A84B</span>
+            <span className="kit-swatch kit-swatch--cream">Cream · #F4ECDF</span>
+          </div>
+          <div>
+            <small>Typography</small>
+            <strong>Cormorant Garamond</strong>
+            <span>Manrope · supporting text</span>
+          </div>
+          <div>
+            <small>Logo files</small>
+            <a href="/brand/hadassah-logo-primary.svg" download>
+              Primary SVG <Download size={14} />
+            </a>
+            <a href="/brand/hadassah-logo-light.svg" download>
+              Reverse SVG <Download size={14} />
+            </a>
+            <a href="/brand/hadassah-symbol-gold.svg" download>
+              Symbol SVG <Download size={14} />
+            </a>
+          </div>
+        </div>
+      </section>
       <section className="kit-principles">
         <div>
           <small>01</small>
@@ -68,7 +122,7 @@ export default function BrandKitPage() {
           {brandTemplates.map((template, index) => (
             <article className="kit-card" key={template.slug}>
               <div className="kit-card__preview">
-                <span>H / L</span>
+                <BrandSymbol className="kit-card__symbol" />
                 <small>{String(index + 1).padStart(2, '0')}</small>
                 <h3>{template.title}</h3>
                 <p>{template.type}</p>

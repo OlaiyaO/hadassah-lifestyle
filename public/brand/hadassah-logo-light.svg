@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" role="img" aria-labelledby="title">
+  <title id="title">Hadassah Lifestyle</title>
+  <g fill="#e5a84b" stroke="#f2c866" stroke-width="1.2" stroke-linejoin="round" transform="translate(4 4)">
+    <path d="M4 35C6 16 21 3 40 2H57V36H39V19H24C15 20 8 27 4 35Z"/>
+    <path d="M4 35C8 26 15 20 24 19V67C12 63 4 50 4 35Z"/>
+    <path d="M70 16C86 21 96 34 96 50C96 58 93 65 89 70C85 74 78 77 70 79V16Z"/>
+    <path d="M39 49H57V66H70C82 63 91 52 96 39C94 64 77 83 57 87H39V49Z"/>
+  </g>
+  <text x="124" y="68" fill="#f4ecdf" font-family="'Cormorant Garamond', Georgia, serif" font-size="55" font-style="italic" font-weight="500">Hadassah</text>
+  <text x="129" y="95" fill="#e5a84b" font-family="Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="8">LIFESTYLE</text>
+</svg>

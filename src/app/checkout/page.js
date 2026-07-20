@@ -5,8 +5,6 @@ import { CheckoutForm } from '@/components/CheckoutForm';
 import { products } from '@/data/products';
 
 export const metadata = { title: 'Checkout | Hadassah Lifestyle' };
-export const dynamic = 'force-dynamic';
-
 export default function CheckoutPage() {
   return (
     <main className="checkout-page">
@@ -14,17 +12,17 @@ export default function CheckoutPage() {
         <Link href="/" aria-label="Hadassah Lifestyle home">
           <BrandMark />
         </Link>
-        <span>Secure order confirmation</span>
+        <span>Order confirmation / no charge yet</span>
       </header>
       <section className="checkout-hero">
         <p className="eyebrow">Your order</p>
         <h1>Confirm every detail.</h1>
-        <p>Review your pieces, delivery information and total before continuing to Paystack.</p>
+        <p>
+          Review your pieces, add delivery details, then open the prepared order in WhatsApp. You
+          will still need to press Send there. No payment is collected on this page.
+        </p>
       </section>
-      <CheckoutForm
-        products={products}
-        paystackConfigured={Boolean(process.env.PAYSTACK_SECRET_KEY)}
-      />
+      <CheckoutForm products={products} />
     </main>
   );
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "308a5e84d8933e81f8a0acc2c68a9fec5a27f828e8b96aa2e7ceb7b86e1764a8",
+  "catalogVersion": "b2f89b7eca0faeecb4531e3de26da81af6da8555dc5098e9d18001082b2ad83c",
   "products": [
     {
       "id": "sade-print-blouse",
@@ -12,7 +12,7 @@
       "image": "/images/product-dress.jpg",
       "imageAlt": "Black woman wearing the floral Sade print blouse",
       "description": "A vivid floral blouse with an easy, polished shape for workdays, dinners and everything between.",
-      "variantNote": "Sizing is confirmed with the Hadassah team after checkout."
+      "variantNote": "Sizing and availability are confirmed by your concierge before payment."
     },
     {
       "id": "abeni-sculpted-mule",
@@ -24,7 +24,7 @@
       "image": "/images/product-shoes.jpg",
       "imageAlt": "Abeni sculpted mule in warm neutral leather",
       "description": "A poised slip-on mule with a sculpted heel, made to sharpen relaxed tailoring and occasion looks.",
-      "variantNote": "Your preferred shoe size is confirmed with the Hadassah team after checkout."
+      "variantNote": "Your preferred size and availability are confirmed before payment."
     },
     {
       "id": "ife-carryall",
@@ -36,7 +36,7 @@
       "image": "/images/product-bag.jpg",
       "imageAlt": "The structured Ife carryall bag in deep burgundy",
       "description": "A generous structured carryall that brings an elegant finish to office days, travel and weekends.",
-      "variantNote": "Colour details are confirmed with the Hadassah team after checkout."
+      "variantNote": "Colour and availability are confirmed by your concierge before payment."
     },
     {
       "id": "ayo-serving-set",
@@ -48,7 +48,7 @@
       "image": "/images/product-kitchen.jpg",
       "imageAlt": "A coordinated serving set arranged in a bright kitchen",
       "description": "A warm considered serving set that moves comfortably from an everyday table to weekend hosting.",
-      "variantNote": "Set details are confirmed in your order follow-up."
+      "variantNote": "Set details and availability are confirmed before payment."
     }
   ]
 }

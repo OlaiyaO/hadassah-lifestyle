@@ -14,7 +14,8 @@ export default function PrivacyPage() {
         <h2>Who handles your information</h2>
         <p>
           {business.name}, based at {business.address.join(', ')}, is responsible for the customer
-          information described here. Our final legal identity must be confirmed before live launch.
+          information described here. Online checkout remains unavailable while the final ordering
+          terms are being approved.
         </p>
       </section>
       <section>

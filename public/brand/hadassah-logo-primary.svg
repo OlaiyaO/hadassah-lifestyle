@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" role="img" aria-labelledby="title">
+  <title id="title">Hadassah Lifestyle</title>
+  <defs>
+    <linearGradient id="top" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0c15c"/><stop offset=".5" stop-color="#c88a16"/><stop offset="1" stop-color="#a96505"/></linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b46f05"/><stop offset="1" stop-color="#e9b94f"/></linearGradient>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#aa6704"/><stop offset=".55" stop-color="#c98712"/><stop offset="1" stop-color="#edbd54"/></linearGradient>
+  </defs>
+  <g transform="translate(4 4)">
+    <path d="M4 35C6 16 21 3 40 2H57V36H39V19H24C15 20 8 27 4 35Z" fill="url(#top)" stroke="#f2c866" stroke-width="1.2" stroke-linejoin="round"/>
+    <path d="M4 35C8 26 15 20 24 19V67C12 63 4 50 4 35Z" fill="url(#side)" stroke="#e8b64c" stroke-width="1.2" stroke-linejoin="round"/>
+    <path d="M70 16C86 21 96 34 96 50C96 58 93 65 89 70C85 74 78 77 70 79V16Z" fill="url(#side)" stroke="#f2c866" stroke-width="1.2" stroke-linejoin="round"/>
+    <path d="M39 49H57V66H70C82 63 91 52 96 39C94 64 77 83 57 87H39V49Z" fill="url(#base)" stroke="#f2c866" stroke-width="1.2" stroke-linejoin="round"/>
+  </g>
+  <text x="124" y="68" fill="#5b1423" font-family="'Cormorant Garamond', Georgia, serif" font-size="55" font-style="italic" font-weight="500">Hadassah</text>
+  <text x="129" y="95" fill="#c88a16" font-family="Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="8">LIFESTYLE</text>
+</svg>

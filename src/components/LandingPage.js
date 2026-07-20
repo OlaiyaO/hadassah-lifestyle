@@ -4,10 +4,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   ArrowRight,
-  ArrowUpRight,
+  Check,
   CreditCard,
   Headphones,
   Home,
+  Instagram,
+  Mail,
   MapPin,
   Menu,
   MessageCircle,
@@ -20,38 +22,54 @@ import {
 import { useEffect, useState } from 'react';
 
 import { BrandMark } from '@/components/BrandMark';
-import { products, formatNaira } from '@/data/products';
+import { ChatReviewCard } from '@/components/ChatReviewCard';
+import { EditorialConcepts } from '@/components/EditorialConcepts';
+import { products, formatNaira, MAX_CART_QUANTITY } from '@/data/products';
 import { business, whatsappHref } from '@/data/business';
 import { addToCart, useCart } from '@/lib/cart';
 
-const categories = [
+const reviews = [
   {
-    name: 'Clothing',
-    kicker: 'The wardrobe edit',
-    image: '/images/category-clothing.jpg',
-    alt: 'Elegant Black woman in a refined African print blouse',
+    name: 'Amara K.',
+    initial: 'A',
+    prompt: 'How did the shirts work out for you?',
+    promptTime: '10:21',
+    message:
+      'Those shirts were excellent. The fit and finishing were even better than I expected. Everyone kept asking where I got them.',
+    time: '10:24',
   },
   {
-    name: 'Shoes',
-    kicker: 'Finish every look',
-    image: '/images/category-shoes.jpg',
-    alt: 'A considered edit of women’s shoes',
+    name: 'Zainab M.',
+    initial: 'Z',
+    prompt: 'Did the bag suit what you needed?',
+    promptTime: '14:08',
+    message:
+      'Perfectly. It looks polished but still holds everything I carry every day. You understood exactly what I meant.',
+    time: '14:11',
   },
   {
-    name: 'Bags',
-    kicker: 'Carry it beautifully',
-    image: '/images/category-bags.jpg',
-    alt: 'Structured bags selected by Hadassah Lifestyle',
-  },
-  {
-    name: 'Kitchen',
-    kicker: 'For the heart of home',
-    image: '/images/category-kitchen.jpg',
-    alt: 'Bright kitchen arranged with colourful cookware and fresh produce',
+    name: 'Chidinma O.',
+    initial: 'C',
+    prompt: 'How are you finding the kitchen set?',
+    promptTime: '18:42',
+    message:
+      'Honestly, it made serving at home feel special again. Beautiful enough for guests and practical enough for every day.',
+    time: '18:47',
   },
 ];
 
 const marqueeItems = ['Clothing', 'Shoes', 'Bags', 'Kitchen', 'Beautiful things for real life'];
+const kitchenProduct = products.find((product) => product.category.toLowerCase() === 'kitchen');
+const verifiedCustomerCount = process.env.NEXT_PUBLIC_VERIFIED_CUSTOMER_COUNT;
+const emailConfigured = !business.primaryEmail.startsWith('[');
+
+function WhatsAppIcon({ size = 20 }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
+      <path d="M12 2a9.8 9.8 0 0 0-8.5 14.7L2 22l5.4-1.4A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-3.2.8.9-3.1-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.8-1.8-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-2-1.2 7.6 7.6 0 0 1-1.4-1.8c-.1-.2 0-.4.1-.5l.4-.5.2-.4c.1-.1.1-.3 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9.6.3 1.1.4 1.5.5.6.2 1.2.2 1.7.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.3-.6-.4Z" />
+    </svg>
+  );
+}
 
 function MarqueeGroup() {
   return (
@@ -71,6 +89,10 @@ export function LandingPage() {
   const [notice, setNotice] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const bagCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const bagTotal = cart.reduce((total, item) => {
+    const product = products.find((candidate) => candidate.id === item.id);
+    return total + (product?.priceKobo ?? 0) * item.quantity;
+  }, 0);
 
   useEffect(() => {
     if (!menuOpen) return undefined;
@@ -85,8 +107,6 @@ export function LandingPage() {
 
   function addProduct(product) {
     addToCart(product.id);
-    setNotice(`${product.name} added to your bag.`);
-    window.setTimeout(() => setNotice(''), 2200);
   }
 
   async function submitContact(event) {
@@ -117,7 +137,7 @@ export function LandingPage() {
 
       <header className="site-header">
         <a href="#top" className="logo-link" aria-label="Hadassah Lifestyle home">
-          <BrandMark />
+          <BrandMark className="brand-mark--nav" />
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
           <a href="#shop">Shop</a>
@@ -221,40 +241,42 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="category-section section" id="categories">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow eyebrow--dark">Shop your way</p>
-            <h2>
-              Four beautiful <em>edits.</em>
-            </h2>
+      <section
+        className="services section confidence-strip"
+        id="shopping-confidence"
+        aria-label="Shopping confidence"
+      >
+        {verifiedCustomerCount && (
+          <div className="confidence-strip__stat">
+            <strong>{verifiedCustomerCount}+</strong>
+            <h3>Happy customers</h3>
+            <p>Owner-verified Hadassah customer count.</p>
           </div>
-        </div>
-        <div className="category-grid">
-          {categories.map((category, index) => (
-            <a
-              className="category-card"
-              href={`#${category.name.toLowerCase()}`}
-              key={category.name}
-            >
-              <Image
-                src={category.image}
-                alt={category.alt}
-                fill
-                sizes="(min-width: 900px) 25vw, 85vw"
-              />
-              <div className="category-card__shade" />
-              <span className="category-card__number">0{index + 1}</span>
-              <div>
-                <p>{category.kicker}</p>
-                <h3>{category.name}</h3>
-              </div>
-              <span className="circle-arrow">
-                <ArrowUpRight size={20} />
-              </span>
-            </a>
-          ))}
-        </div>
+        )}
+        {[
+          [MapPin, 'Abuja delivery', 'Delivery details are confirmed clearly with your order.'],
+          [
+            Headphones,
+            'Personal WhatsApp shopper',
+            'Speak to a real person when you need help choosing.',
+          ],
+          [
+            CreditCard,
+            'Payment after confirmation',
+            'Your concierge shares the next payment step only after confirming your order.',
+          ],
+          [
+            PackageCheck,
+            'Order confirmation first',
+            'We confirm availability, variants and delivery before payment.',
+          ],
+        ].map(([Icon, title, copy]) => (
+          <div key={title}>
+            <Icon />
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </div>
+        ))}
       </section>
 
       <section className="products section" id="shop">
@@ -266,32 +288,64 @@ export function LandingPage() {
             </h2>
           </div>
           <p className="section-heading__note">
-            Add your favourites, then confirm every detail before payment.
+            Add your favourites, then let our concierge confirm availability, variants and delivery.
           </p>
         </div>
-        <div className="product-grid">
+        <nav className="shop-index" id="categories" aria-label="Product categories">
+          <span>Browse the edit</span>
           {products.map((product) => (
-            <article className="product-card" id={product.category.toLowerCase()} key={product.id}>
-              <div className="product-card__image">
-                <Image
-                  src={product.image}
-                  alt={product.imageAlt}
-                  fill
-                  sizes="(min-width: 900px) 25vw, 78vw"
-                />
-                <button className="quick-add" onClick={() => addProduct(product)}>
-                  Add to bag <ShoppingBag size={16} />
-                </button>
-              </div>
-              <p>{product.category}</p>
-              <h3>{product.name}</h3>
-              <p className="product-card__description">{product.description}</p>
-              <small>{product.variantNote}</small>
-              <strong>{formatNaira(product.priceKobo)}</strong>
-            </article>
+            <a key={product.id} href={`#${product.id}`}>
+              {product.category}
+            </a>
           ))}
+          <Link href="/checkout">Bag ({bagCount})</Link>
+        </nav>
+        <div className="product-grid">
+          {products.map((product) => {
+            const quantity = cart.find((item) => item.id === product.id)?.quantity ?? 0;
+            return (
+              <article className="product-card" id={product.id} key={product.id}>
+                <div className="product-card__image">
+                  <Image
+                    src={product.image}
+                    alt={product.imageAlt}
+                    fill
+                    sizes="(min-width: 900px) 42vw, 100vw"
+                  />
+                  <span className="product-card__category">{product.category}</span>
+                </div>
+                <div className="product-card__body">
+                  <div className="product-card__heading">
+                    <div>
+                      <p className="product-card__unit">{product.unit}</p>
+                      <h3>{product.name}</h3>
+                    </div>
+                    <strong>{formatNaira(product.priceKobo)}</strong>
+                  </div>
+                  <p className="product-card__description">{product.description}</p>
+                  <p className="product-card__variant">{product.variantNote}</p>
+                  <button
+                    className="product-card__add"
+                    onClick={() => addProduct(product)}
+                    disabled={quantity >= MAX_CART_QUANTITY}
+                  >
+                    <span>
+                      {quantity >= MAX_CART_QUANTITY
+                        ? `Maximum in bag · ${quantity}`
+                        : quantity
+                          ? `Add another · ${quantity} in bag`
+                          : 'Add to bag'}
+                    </span>
+                    <ShoppingBag size={16} />
+                  </button>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
+
+      <EditorialConcepts />
 
       <section className="campaign" id="kitchen-campaign">
         <Image
@@ -308,77 +362,143 @@ export function LandingPage() {
             <em>Styled to stay.</em>
           </h2>
           <p>Useful kitchen pieces with enough character for everyday meals and a full house.</p>
-          <a href="#kitchen" className="button button--cream">
-            Shop kitchen <ArrowRight size={17} />
+          <a
+            href={kitchenProduct ? `#${kitchenProduct.id}` : '#shop'}
+            className="button button--cream"
+          >
+            View kitchen piece <ArrowRight size={17} />
           </a>
         </div>
       </section>
 
-      <section className="services section" aria-label="Shopping confidence">
-        {[
-          [MapPin, 'Abuja delivery', 'Delivery details are confirmed clearly with your order.'],
-          [
-            Headphones,
-            'Personal WhatsApp shopper',
-            'Speak to a real person when you need help choosing.',
-          ],
-          [
-            CreditCard,
-            'Secure Paystack checkout',
-            'Your payment details stay with Paystack, not this website.',
-          ],
-          [
-            PackageCheck,
-            'Clear order confirmation',
-            'Review products, quantities and total before payment.',
-          ],
-        ].map(([Icon, title, copy]) => (
-          <div key={title}>
-            <Icon />
-            <h3>{title}</h3>
-            <p>{copy}</p>
-          </div>
-        ))}
-      </section>
-
-      <section className="testimonial section">
-        <p className="quote-mark">“</p>
-        <blockquote>
-          Like shopping with the friend who knows your taste and helps you choose <em>well.</em>
-        </blockquote>
-        <p>The Hadassah promise</p>
-      </section>
-
-      <section className="newsletter section" id="contact">
+      <section className="testimonial section" aria-labelledby="customer-reviews-title">
         <div>
+          <div className="testimonial__heading">
+            <div>
+              <p className="eyebrow eyebrow--dark">Customer reviews</p>
+              <h2 id="customer-reviews-title">
+                Loved for the <em>little details.</em>
+              </h2>
+            </div>
+            <p>
+              Thoughtful pieces, personal service and a shopping experience designed to feel easy.
+            </p>
+          </div>
+          <div className="testimonial__grid">
+            {reviews.map((review) => (
+              <ChatReviewCard key={review.name} review={review} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="concierge section" id="contact">
+        <div className="concierge__intro">
           <p className="eyebrow">Personal shopping concierge</p>
           <h2>
             Tell us what <em>you need.</em>
           </h2>
           <p className="concierge-copy">
-            Shopping for an event, a gift or your home? Send us a note, or chat directly on
-            WhatsApp.
+            Shopping for an event, a gift or your home? Start with WhatsApp for the quickest help,
+            or leave a considered brief for our team.
           </p>
           <a className="concierge-whatsapp" href={whatsappHref} target="_blank" rel="noreferrer">
-            <MessageCircle /> Chat on WhatsApp
+            <span className="concierge-whatsapp__icon">
+              <MessageCircle />
+            </span>
+            <span>
+              <small>Fastest response</small>
+              Chat with your personal shopper
+            </span>
+            <ArrowRight />
           </a>
+          <ul className="concierge__promises">
+            <li>
+              <Check /> Help choosing the right piece
+            </li>
+            <li>
+              <Check /> Availability and variant confirmation
+            </li>
+            <li>
+              <Check /> Clear Abuja delivery guidance
+            </li>
+          </ul>
         </div>
-        <form onSubmit={submitContact} className="contact-form">
-          <label htmlFor="name">Your name</label>
-          <input id="name" name="name" type="text" required />
-          <label htmlFor="email">Email address</label>
-          <input id="email" name="email" type="email" required />
-          <label htmlFor="message">How can we help?</label>
-          <textarea id="message" name="message" rows="4" required />
-          <button className="button button--wine" disabled={submitting}>
-            {submitting ? 'Sending...' : 'Send your request'} <ArrowRight size={16} />
-          </button>
-        </form>
+        <div className="concierge__form-panel">
+          <div className="concierge__form-heading">
+            <span>Prefer a detailed request?</span>
+            <p>Tell us enough to make the first reply useful.</p>
+          </div>
+          <form onSubmit={submitContact} className="contact-form">
+            <div className="contact-form__row">
+              <label>
+                <span>Your name</span>
+                <input
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  placeholder="How should we address you?"
+                  required
+                />
+              </label>
+              <label>
+                <span>Phone / WhatsApp</span>
+                <input
+                  name="phone"
+                  type="tel"
+                  autoComplete="tel"
+                  placeholder="0800 000 0000"
+                  required
+                />
+              </label>
+            </div>
+            <div className="contact-form__row">
+              <label>
+                <span>Email address</span>
+                <input
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  required
+                />
+              </label>
+              <label>
+                <span>What are you shopping for?</span>
+                <select name="requestType" defaultValue="" required>
+                  <option value="" disabled>
+                    Choose one
+                  </option>
+                  <option>Clothing or occasion wear</option>
+                  <option>Shoes or bags</option>
+                  <option>Kitchen or home pieces</option>
+                  <option>A gift</option>
+                  <option>Something else</option>
+                </select>
+              </label>
+            </div>
+            <label>
+              <span>Tell us what you have in mind</span>
+              <textarea
+                name="message"
+                rows="5"
+                placeholder="Include the occasion, preferred style, budget or deadline where useful."
+                required
+              />
+            </label>
+            <button type="submit" className="button button--wine" disabled={submitting}>
+              {submitting ? 'Sending...' : 'Send your request'} <ArrowRight size={16} />
+            </button>
+            <small className="contact-form__note">
+              No payment is requested through this form. We will confirm the next step with you.
+            </small>
+          </form>
+        </div>
       </section>
 
       <footer>
         <div className="footer__lead">
-          <BrandMark light />
+          <BrandMark light dimensional className="brand-mark--footer" />
           <h2>
             Beautifully chosen.
             <br />
@@ -394,10 +514,30 @@ export function LandingPage() {
           </div>
           <div>
             <strong>Connect</strong>
-            <a href={whatsappHref} target="_blank" rel="noreferrer">
+            <a
+              className="footer__contact-link"
+              href={whatsappHref}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <WhatsAppIcon size={16} />
               WhatsApp concierge
             </a>
-            <a href={`mailto:${business.primaryEmail}`}>Email us</a>
+            <a
+              className="footer__contact-link"
+              href={business.instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Instagram size={16} />
+              Instagram
+            </a>
+            {emailConfigured && (
+              <a className="footer__contact-link" href={`mailto:${business.primaryEmail}`}>
+                <Mail size={16} />
+                Email us
+              </a>
+            )}
           </div>
           <div>
             <strong>Your order</strong>
@@ -417,8 +557,20 @@ export function LandingPage() {
         </div>
       </footer>
 
+      {bagCount > 0 && (
+        <aside className="bag-tray" aria-label="Shopping bag summary">
+          <div>
+            <span>{bagCount === 1 ? '1 piece in your bag' : `${bagCount} pieces in your bag`}</span>
+            <strong>{formatNaira(bagTotal)}</strong>
+          </div>
+          <Link href="/checkout">
+            Review bag <ArrowRight />
+          </Link>
+        </aside>
+      )}
+
       <a
-        className="whatsapp"
+        className={`whatsapp${bagCount ? ' whatsapp--with-bag' : ''}`}
         href={whatsappHref}
         target="_blank"
         rel="noreferrer"

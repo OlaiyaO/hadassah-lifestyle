@@ -32,8 +32,7 @@ export default function DeliveryReturnsPage() {
         <p>
           Physical goods may be eligible for return only when unused and unworn, with their original
           tags, accessories and packaging, and when you contact us promptly. The final returns
-          window has not yet been approved and must be confirmed before live launch. Please do not
-          publish or enable live payments until that window is stated clearly here.
+          window is being approved and will be stated here before online checkout is enabled.
         </p>
       </section>
       <section>

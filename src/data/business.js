@@ -3,6 +3,8 @@ export const business = {
   owner: 'Ajoke Ola',
   phone: '+234 704 006 3000',
   whatsappNumber: '2347040063000',
+  instagramUrl:
+    process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://www.instagram.com/hadassah_lifestyle11/',
   primaryEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || '[professional email to be confirmed]',
   address: [
     'Shop 3, B10 Plaza',

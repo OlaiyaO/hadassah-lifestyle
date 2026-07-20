@@ -4,9 +4,11 @@ export async function POST(request) {
   const body = await request.json();
   const name = String(body.name || '').trim();
   const email = String(body.email || '').trim();
+  const phone = String(body.phone || '').trim();
+  const requestType = String(body.requestType || '').trim();
   const message = String(body.message || '').trim();
 
-  if (!name || !email || !message) {
+  if (!name || !email || !phone || !requestType || !message) {
     return NextResponse.json({ error: 'Please complete every field.' }, { status: 400 });
   }
 
@@ -32,7 +34,7 @@ export async function POST(request) {
       to: [primaryRecipient, secondaryRecipient].filter(Boolean),
       reply_to: email,
       subject: `Hadassah enquiry from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+      text: `Name: ${name}\nEmail: ${email}\nPhone / WhatsApp: ${phone}\nRequest type: ${requestType}\n\n${message}`,
     }),
   });
 

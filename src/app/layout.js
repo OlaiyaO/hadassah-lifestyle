@@ -15,7 +15,7 @@ const body = Manrope({
 });
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://hadassahlifestyle.com'),
   title: 'Hadassah Lifestyle | Beautifully Chosen, Effortlessly Yours',
   description:
     'Curated clothing, shoes, bags and kitchen pieces selected to make everyday living feel considered.',
@@ -23,6 +23,15 @@ export const metadata = {
     title: 'Hadassah Lifestyle',
     description: 'Dress well. Live beautifully. Find the pieces that make both feel effortless.',
     type: 'website',
+    url: '/',
+    siteName: 'Hadassah Lifestyle',
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Hadassah Lifestyle' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Hadassah Lifestyle',
+    description: 'Dress well. Live beautifully. Find the pieces that make both feel effortless.',
+    images: ['/opengraph-image'],
   },
 };
 
